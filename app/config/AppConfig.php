@@ -23,7 +23,7 @@ class AppConfig {
     define('ASSETS_ROOT', PUBLIC_ROOT . '/assets');
 
     // Load the application configuration
-    require_once CONFIG_ROOT . '/database.php';
+    require_once CONFIG_ROOT . '/Database.php';
   }
 }
 

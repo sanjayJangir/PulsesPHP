@@ -3,11 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Servcies\View;
 
 class LoginController extends Controller {
+
   public function index() {
     // Logic for displaying the login form
-    echo "Login Form";
+    echo View::make(APP_ROOT . '/Views')
+      ->render('home', [
+        'title' => 'Login Page',
+        'name'  => 'Sanjay',
+      ]);
   }
 
   public function authenticate() {

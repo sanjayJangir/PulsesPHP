@@ -3,7 +3,7 @@ define('APP_ROOT', __DIR__);
 define('CONFIG_ROOT', APP_ROOT . '/app/Config');
 
 // Load the application configuration
-require_once CONFIG_ROOT . '/app_config.php';
+require_once CONFIG_ROOT . '/AppConfig.php';
 
 // Include the autoloader for classes
 require_once APP_ROOT . '/vendor/autoload.php';

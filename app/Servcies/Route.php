@@ -5,21 +5,21 @@ namespace App\Servcies;
 class Route {
   private static $routes = [];
 
-  private static $controllerNamespace = 'App\Controllers\\';
-
-  public static function get($path, $action, $middleware = null, $namespace = null, $prefix = null, $name = null) {
-    self::addRoute('GET', $path, $action, $middleware, $namespace, $prefix, $name);
+  public static function get($path, $controller, $action = null, $middleware = null, $namespace = null, $prefix = null, $name = null) {
+    self::addRoute('GET', $path, $controller, $action, $middleware, $namespace, $prefix, $name);
   }
 
-  public static function post($path, $action, $middleware = null, $namespace = null, $prefix = null, $name = null) {
-    self::addRoute('POST', $path, $action, $middleware, $namespace, $prefix, $name);
+  public static function post($path, $controller, $action = null, $middleware = null, $namespace = null, $prefix = null, $name = null) {
+    self::addRoute('POST', $path, $controller, $action, $middleware, $namespace, $prefix, $name);
   }
 
-  private static function addRoute($method, $path, $action, $middleware = null, $namespace = null, $prefix = null, $name = null) {
+  private static function addRoute($method, $path, $controller, $action, $middleware = null, $namespace = null, $prefix = null, $name = null) {
+    // If the controller is a string, prepend the namespace
+
     self::$routes[] = [
       'method' => $method,
       'path' => $path,
-      'action' => self::$controllerNamespace . $action,
+      'action' => !empty($action) ? $controller . '@' . $action : $controller,
       'middleware' => $middleware,
       'namespace' => $namespace,
       'prefix' => $prefix,
@@ -31,7 +31,15 @@ class Route {
     $requestURI = $_SERVER['REQUEST_URI'];
     $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+    $requestURI = strtok($requestURI, '?'); // Remove query string if present
+
+    // Normalize the request URI
+    $requestURI = rtrim($requestURI, '/');
+    $requestURI = $requestURI === '' ? '/' : $requestURI;
+
+    // Iterate through the routes to find a match
     foreach (self::$routes as $route) {
+      // Check if the request method and path match the route
       if ($route['method'] === $requestMethod && $route['path'] === $requestURI) {
         $action = explode('@', $route['action']);
         $controllerName = $action[0];
