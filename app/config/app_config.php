@@ -24,7 +24,6 @@ class AppConfig {
 
     // Load the application configuration
     require_once CONFIG_ROOT . '/database.php';
-    require_once CONFIG_ROOT . '/routes.php';
   }
 }
 
